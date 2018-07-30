@@ -166,26 +166,10 @@ selectCXX()
 {
     __output=$1
 
-    if [ "x$CXX" = "x" ]; then
-        CXX=g++
-        if which g++-8 >/dev/null 2>&1; then
-            CXX=g++-8
-        elif which g++-7 >/dev/null 2>&1; then
-            CXX=g++-7
-        elif which g++-6 >/dev/null 2>&1; then
-            CXX=g++-6
-        fi
-    fi
+	echo "Current CXX env value: $CXX"
+	echo "Current CC env value: $CC"
 
-    gccversion="$("$CXX" -v 2>&1)"
-    gccversion="$(extractStringBetweenDelimiters "$gccversion" "gcc version " ".")"
-    if [ "$gccversion" -lt "6" ]; then
-        echo "CXX ($CXX) is too old; please install a newer compiler such as g++-7."
-        echo "sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y"
-        echo "sudo apt-get update -y"
-        echo "sudo apt-get install g++-7 -y"
-        return 1
-    fi
+	echo "clang detected"
 
     eval $__output="'$CXX'"
 }
@@ -201,7 +185,9 @@ buildDir="$vcpkgRootDir/toolsrc/build.rel"
 rm -rf "$buildDir"
 mkdir -p "$buildDir"
 
-(cd "$buildDir" && CXX=$CXX "$cmakeExe" .. -DCMAKE_BUILD_TYPE=Release -G "Ninja" "-DCMAKE_MAKE_PROGRAM=$ninjaExe" "-DDEFINE_DISABLE_METRICS=$vcpkgDisableMetrics")
+echo "Using custom toolchain file: $CMAKE_TOOLCHAIN_FILE"
+(cd "$buildDir" && CXX=$CXX "$cmakeExe" .. -DCMAKE_BUILD_TYPE=Release -G "Ninja" "-DCMAKE_MAKE_PROGRAM=$ninjaExe" "-DDEFINE_DISABLE_METRICS=$vcpkgDisableMetrics" "-DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE")
+
 (cd "$buildDir" && "$cmakeExe" --build .)
 
 rm -rf "$vcpkgRootDir/vcpkg"
