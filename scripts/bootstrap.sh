@@ -186,6 +186,7 @@ rm -rf "$buildDir"
 mkdir -p "$buildDir"
 
 echo "Using custom toolchain file: $CMAKE_TOOLCHAIN_FILE"
+echo "Root: $CLANG_TOOLCHAIN_ROOT"
 (cd "$buildDir" && CXX=$CXX "$cmakeExe" .. -DCMAKE_BUILD_TYPE=Release -G "Ninja" "-DCMAKE_MAKE_PROGRAM=$ninjaExe" "-DDEFINE_DISABLE_METRICS=$vcpkgDisableMetrics" "-DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE")
 
 (cd "$buildDir" && "$cmakeExe" --build .)
