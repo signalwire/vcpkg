@@ -114,7 +114,11 @@ function(vcpkg_configure_cmake)
     if(GENERATOR STREQUAL "Ninja")
         vcpkg_find_acquire_program(NINJA)
         get_filename_component(NINJA_PATH ${NINJA} DIRECTORY)
-        set(ENV{PATH} "$ENV{PATH};${NINJA_PATH}")
+	if (WIN32)
+		set(ENV{PATH} "$ENV{PATH};${NINJA_PATH}")
+	else()
+		set(ENV{PATH} "$ENV{PATH}:${NINJA_PATH}")
+	endif()
         list(APPEND _csc_OPTIONS "-DCMAKE_MAKE_PROGRAM=${NINJA}")
     endif()
 
@@ -210,7 +214,12 @@ function(vcpkg_configure_cmake)
 
         vcpkg_find_acquire_program(NINJA)
         get_filename_component(NINJA_PATH ${NINJA} DIRECTORY)
-        set(ENV{PATH} "$ENV{PATH};${NINJA_PATH}")
+
+	if (WIN32)
+		set(ENV{PATH} "$ENV{PATH};${NINJA_PATH}")
+	else()
+		set(ENV{PATH} "$ENV{PATH}:${NINJA_PATH}")
+	endif()
 
         #parallelize the configure step
         set(_contents
