@@ -185,9 +185,10 @@ buildDir="$vcpkgRootDir/toolsrc/build.rel"
 rm -rf "$buildDir"
 mkdir -p "$buildDir"
 
-echo "Using custom toolchain file: $CMAKE_TOOLCHAIN_FILE"
-echo "Root: $CLANG_TOOLCHAIN_ROOT"
-(cd "$buildDir" && CXX=$CXX "$cmakeExe" .. -DCMAKE_BUILD_TYPE=Release -G "Ninja" "-DCMAKE_MAKE_PROGRAM=$ninjaExe" "-DDEFINE_DISABLE_METRICS=$vcpkgDisableMetrics" "-DCMAKE_TOOLCHAIN_FILE=$CMAKE_TOOLCHAIN_FILE")
+echo "Using custom toolchain file: $SW_CMAKE_TOOLCHAIN_FILE"
+echo "Toolchain Root: $SW_TOOLCHAIN_ROOT"
+echo "Vcpkg Root: $VCPKG_ROOT""
+(cd "$buildDir" && CXX=$CXX "$cmakeExe" .. -DCMAKE_BUILD_TYPE=Release -G "Ninja" "-DCMAKE_MAKE_PROGRAM=$ninjaExe" "-DDEFINE_DISABLE_METRICS=$vcpkgDisableMetrics" "-DCMAKE_TOOLCHAIN_FILE=$SW_CMAKE_TOOLCHAIN_FILE")
 
 (cd "$buildDir" && "$cmakeExe" --build .)
 
