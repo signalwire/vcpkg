@@ -67,7 +67,7 @@ vcpkgDownloadFile()
     url=$1; downloadPath=$2 sha512=$3
     vcpkgCheckRepoTool "wget"
     rm -rf "$downloadPath.part"
-    wget --force-directoriesm -O "$downloadPath.part" $url || exit 1
+    wget --force-directories -O "$downloadPath.part" $url || exit 1
 
     vcpkgCheckEqualFileHash $url "$downloadPath.part" $sha512
     mv "$downloadPath.part" "$downloadPath"
