@@ -18,6 +18,7 @@ while [ "$vcpkgRootDir" != "/" ] && ! [ -e "$vcpkgRootDir/.vcpkg-root" ]; do
 done
 
 downloadsDir="$vcpkgRootDir/downloads"
+mkdir -p $downloadsDir
 
 extractStringBetweenDelimiters()
 {
@@ -67,7 +68,7 @@ vcpkgDownloadFile()
     url=$1; downloadPath=$2 sha512=$3
     vcpkgCheckRepoTool "wget"
     rm -rf "$downloadPath.part"
-    wget --force-directories -O "$downloadPath.part" $url || exit 1
+    wget -O "$downloadPath.part" $url || exit 1
 
     vcpkgCheckEqualFileHash $url "$downloadPath.part" $sha512
     mv "$downloadPath.part" "$downloadPath"
