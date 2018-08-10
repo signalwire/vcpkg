@@ -18,7 +18,6 @@ while [ "$vcpkgRootDir" != "/" ] && ! [ -e "$vcpkgRootDir/.vcpkg-root" ]; do
 done
 
 downloadsDir="$vcpkgRootDir/downloads"
-mkdir -p $downloadsDir
 
 extractStringBetweenDelimiters()
 {
@@ -33,7 +32,7 @@ vcpkgCheckRepoTool()
     __tool=$1
     if ! command -v "$__tool" >/dev/null 2>&1 ; then
         echo "Could not find $__tool. Please install it (and other dependencies) with:"
-        echo "sudo apt-get install wget unzip tar"
+        echo "sudo apt-get install curl unzip tar"
         exit 1
     fi
 }
@@ -66,10 +65,9 @@ vcpkgCheckEqualFileHash()
 vcpkgDownloadFile()
 {
     url=$1; downloadPath=$2 sha512=$3
-    vcpkgCheckRepoTool "wget"
+    vcpkgCheckRepoTool "curl"
     rm -rf "$downloadPath.part"
-	mkdir -p dirname $downloadPath.part
-    wget -O "$downloadPath.part" $url || exit 1
+    curl -L $url --create-dirs --output "$downloadPath.part" || exit 1
 
     vcpkgCheckEqualFileHash $url "$downloadPath.part" $sha512
     mv "$downloadPath.part" "$downloadPath"
