@@ -45,6 +45,7 @@ target_include_directories(vcpkg PRIVATE include)
 if(GCC)
     target_link_libraries(vcpkg PRIVATE stdc++fs)
 elseif(CLANG)
+    target_link_libraries(vcpkg PRIVATE c++experimental)
 endif()
 
 if(WIN32)
